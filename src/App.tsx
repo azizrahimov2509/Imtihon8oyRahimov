@@ -4,13 +4,12 @@ import {
   Navigate,
   RouterProvider,
 } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 import Layout from "./components/Layout";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import Recipes from "./pages/Recipes";
+import { Toaster } from "react-hot-toast";
 
 interface RedirectProps {
   children: React.ReactNode;
@@ -50,7 +49,7 @@ const App: React.FC = () => {
   return (
     <>
       <RouterProvider router={router} />
-      <ToastContainer />
+      <Toaster />
     </>
   );
 };

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../farebase/config";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-hot-toast";
+
 import { FaClock } from "react-icons/fa";
 
 interface Recipe {
@@ -42,7 +42,6 @@ const Recipes: React.FC = () => {
         await deleteDoc(doc(db, "recipes", id));
         setRecipes(recipes.filter((recipe) => recipe.id !== id));
         toast.success("Recipe has been deleted!", {
-          autoClose: 2000,
           position: "top-right",
           className: "bg-red-500 text-white",
         });
@@ -53,42 +52,44 @@ const Recipes: React.FC = () => {
   };
 
   return (
-    <div className="container">
-      <h1 className="text-3xl pb-2">Recipes</h1>
-      <hr />
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl md:text-3xl pb-2 font-semibold">Recipes</h1>
+      <hr className="mb-4" />
       {recipes.length === 0 ? (
-        <p className="text-center mt-4">There are no recipes!</p>
+        <p className="text-center text-lg">There are no recipes!</p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {recipes.map((recipe) => (
-            <div key={recipe.id} className="border p-4 rounded relative">
+            <div
+              key={recipe.id}
+              className="border p-3 rounded-md relative bg-white shadow-sm"
+            >
               <button
                 type="button"
-                className="absolute top-2 right-2 text-red-500 text-2xl bg-white rounded-full p-1"
+                className="absolute top-2 right-2 text-red-500 text-lg bg-white rounded-full p-1"
                 onClick={() => handleDelete(recipe.id)}
               >
                 ×
               </button>
-              <div className="mb-4">
-                <h2 className="text-xl font-bold">{recipe.title}</h2>
-                <p className="text-gray-600">
-                  Cooking Time: <FaClock size={14} color="blue" />{" "}
-                  {recipe.cookingTime} minutes
-                </p>
-                <ul className="mt-2">
-                  {recipe.ingredients.map((ingredient, index) => (
-                    <li key={index} className="text-gray-800">
-                      - {ingredient}
-                    </li>
-                  ))}
-                </ul>
+              <div className="mb-3">
+                <h2 className="text-lg font-semibold mb-2">{recipe.title}</h2>
+                <p className="text-sm text-gray-700 mb-2">{recipe.method}</p>
+                <div className="flex items-center justify-end gap-1 text-sm text-gray-600">
+                  <span className="indicator-item badge badge-primary">
+                    new
+                  </span>
+                  <p className="bg-fuchsia-300 rounded-full px-2 py-1 flex items-center gap-1">
+                    <FaClock size={14} color="blue" /> {recipe.cookingTime}{" "}
+                    minutes
+                  </p>
+                </div>
               </div>
               {recipe.images.length > 0 && (
                 <div className="relative">
                   <img
                     src={recipe.images[0]}
                     alt={recipe.title}
-                    className="w-full h-48 object-cover rounded"
+                    className="w-full h-36 object-cover rounded"
                   />
                 </div>
               )}
@@ -96,7 +97,7 @@ const Recipes: React.FC = () => {
           ))}
         </div>
       )}
-      <ToastContainer />
+      {/* <ToastContainer /> */}
     </div>
   );
 };

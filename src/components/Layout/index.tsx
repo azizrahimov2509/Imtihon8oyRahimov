@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import Header from "../Header";
-import { ToastContainer } from "react-toastify";
 
 interface User {
   displayName: string;
@@ -22,7 +21,6 @@ export default function Layout() {
 
   return (
     <>
-      <ToastContainer />
       <Header />
       <main className="my-5">
         <Outlet />

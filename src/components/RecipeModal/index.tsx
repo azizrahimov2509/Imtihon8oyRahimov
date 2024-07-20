@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { collection, addDoc } from "firebase/firestore";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import toast from "react-hot-toast";
 import { db } from "../../farebase/config";
 
 interface RecipeModalProps {
@@ -33,12 +32,12 @@ const RecipeModal: React.FC<RecipeModalProps> = ({ setRefresh }) => {
     e.preventDefault();
 
     if (ingredients.length === 0) {
-      alert("Please add at least one ingredient.");
+      toast.error("Please add at least one ingredient.");
       return;
     }
 
     if (images.length === 0) {
-      alert("Please add at least one image URL.");
+      toast.error("Please add at least one image URL.");
       return;
     }
 
@@ -54,9 +53,7 @@ const RecipeModal: React.FC<RecipeModalProps> = ({ setRefresh }) => {
       setLoading(true);
       const docRef = await addDoc(collection(db, "recipes"), recipeData);
       console.log(docRef);
-      toast.success("Recipe added successfully!", {
-        autoClose: 2000,
-      });
+      toast.success("Recipe added successfully!");
       setTitle("");
       setCookingTime("");
       setIngredients([]);
@@ -252,7 +249,6 @@ const RecipeModal: React.FC<RecipeModalProps> = ({ setRefresh }) => {
           </div>
         )}
       </dialog>
-      <ToastContainer />
     </>
   );
 };
