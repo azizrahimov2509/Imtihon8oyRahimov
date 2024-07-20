@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleDarkMode, selectDarkMode } from "../../store/DarkModeSlice";
 import { useNavigate } from "react-router-dom";
-import useGetData from "../../components/Hook/useGetData";
+// import useGetData from "../../components/Hook/useGetData";
 import { auth } from "../../farebase/config";
 
 interface User {
@@ -14,12 +14,12 @@ interface User {
 function Header() {
   const dispatch = useDispatch();
   const darkMode = useSelector(selectDarkMode);
-  const [refresh, setRefresh] = useState(false);
-  const {
-    data: [data],
-    isPending,
-    error,
-  } = useGetData("cart", refresh);
+  //   const [refresh, setRefresh] = useState(false);
+  //   const {
+  //     data: [data],
+  //     isPending,
+  //     error,
+  //   } = useGetData("cart", refresh);
   const navigate = useNavigate();
   const storedUser = localStorage.getItem("user");
   const user: User | null = storedUser ? JSON.parse(storedUser) : null;
