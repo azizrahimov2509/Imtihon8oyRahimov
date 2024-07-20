@@ -3,7 +3,7 @@ import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../farebase/config";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FaClock, FaRegClock } from "react-icons/fa";
+import { FaClock } from "react-icons/fa";
 
 interface Recipe {
   id: string;
