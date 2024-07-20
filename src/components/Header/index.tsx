@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleDarkMode, selectDarkMode } from "../../store/DarkModeSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { FaHome, FaPlus, FaSignOutAlt } from "react-icons/fa";
 // import useGetData from "../../components/Hook/useGetData";
 import { auth } from "../../farebase/config";
+import RecipeModal from "../RecipeModal";
 
 interface User {
   displayName?: string;
@@ -51,46 +53,15 @@ function Header() {
   const user1 = auth?.currentUser?.providerData[0];
   console.log(user1);
 
+  const openModal = () => {
+    const modal = document.getElementById("recipe_modal") as HTMLDialogElement;
+    modal?.showModal();
+  };
+
   return (
     <header className="bg-base-300">
       <div className="container navbar">
         <div className="navbar-start">
-          <div className="dropdown">
-            <div
-              tabIndex={0}
-              role="button"
-              className="btn btn-ghost btn-circle"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h16M4 18h7"
-                />
-              </svg>
-            </div>
-            <ul
-              tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
-            >
-              <li>
-                <a>Homepage</a>
-              </li>
-              <li>
-                <a>Portfolio</a>
-              </li>
-              <li>
-                <a>About</a>
-              </li>
-            </ul>
-          </div>
           <div className="dropdown  ml-5">
             <div
               tabIndex={0}
@@ -98,11 +69,14 @@ function Header() {
               className="btn btn-ghost btn-circle"
             >
               {user && user.photoURL ? (
-                <img src={user.photoURL} alt="user icon" width={40} />
+                <div className="flex items-center">
+                  <img src={user.photoURL} alt="user icon" width={40} />{" "}
+                  <p className="ml-2">{user?.displayName}</p>
+                </div>
               ) : (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-7 w-7"
+                  className="h-8 w-8"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -136,9 +110,51 @@ function Header() {
           </div>
         </div>
         <div className="navbar-center">
-          <a className="btn btn-ghost text-xl">Rahimov</a>
+          <a className="btn btn-ghost text-xl">Kitchen app</a>
         </div>
         <div className="navbar-end">
+          <div className="dropdown">
+            <div
+              tabIndex={0}
+              role="button"
+              className="btn btn-ghost btn-circle"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h16M4 18h7"
+                />
+              </svg>
+            </div>
+            <ul
+              tabIndex={0}
+              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 flex flex-col items-center gap-2"
+            >
+              <li>
+                <Link to={"/"} className="btn btn-primary w-44">
+                  <FaHome /> Homepage
+                </Link>
+              </li>
+              <li>
+                <button className="btn btn-primary  w-44" onClick={openModal}>
+                  <FaPlus /> Create Recipe
+                </button>
+              </li>
+              <li>
+                <a onClick={handleLogout} className="btn btn-primary  w-44">
+                  <FaSignOutAlt /> Logout
+                </a>
+              </li>
+            </ul>
+          </div>
           <div className="indicator">
             <div className="dropdown dropdown-end">
               <div
@@ -210,6 +226,7 @@ function Header() {
           </label>
         </div>
       </div>
+      <RecipeModal setRefresh={() => {}} />
     </header>
   );
 }

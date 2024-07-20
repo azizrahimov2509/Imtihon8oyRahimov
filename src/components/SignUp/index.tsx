@@ -11,6 +11,8 @@ import { auth } from "../../farebase/config";
 import { Link, useNavigate } from "react-router-dom";
 import bg1 from "../../../public/bgfood.jpg";
 import { FcGoogle } from "react-icons/fc";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface FormData {
   email: string;
@@ -51,6 +53,7 @@ const SignUp: React.FC = () => {
         photoURL: user.photoURL || "",
       };
       localStorage.setItem("user", JSON.stringify(userData));
+      toast.success(`Welcome, ${user.displayName}!`);
       navigate("/");
     } catch (error) {
       const authError = error as AuthError;
@@ -76,6 +79,7 @@ const SignUp: React.FC = () => {
           photoURL: user.photoURL || "",
         };
         localStorage.setItem("user", JSON.stringify(userData));
+        toast.success(`Welcome, ${user.displayName}!`);
         navigate("/");
       })
       .catch((error: AuthError) => {

@@ -1,12 +1,16 @@
+import React from "react";
 import {
   createBrowserRouter,
   Navigate,
   RouterProvider,
 } from "react-router-dom";
-import Layout from "./components/Layout";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
+import Layout from "./components/Layout";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
+import Recipes from "./pages/Recipes";
 
 interface RedirectProps {
   children: React.ReactNode;
@@ -33,17 +37,22 @@ const router = createBrowserRouter([
         <Layout />
       </Redirect>
     ),
-    // children: [
-    //   {
-    //     path: "/",
-    //     element: <Recipes />,
-    //   },
-    // ],
+    children: [
+      {
+        index: true,
+        element: <Recipes />,
+      },
+    ],
   },
 ]);
 
 const App: React.FC = () => {
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+      <ToastContainer />
+    </>
+  );
 };
 
 export default App;

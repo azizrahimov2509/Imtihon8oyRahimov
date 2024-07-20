@@ -10,6 +10,7 @@ import { auth } from "../../farebase/config";
 import { Link, useNavigate } from "react-router-dom";
 import bg1 from "../../../public/bgfood.jpg";
 import { FcGoogle } from "react-icons/fc";
+import { toast } from "react-toastify";
 
 interface LoginData {
   email: string;
@@ -37,6 +38,7 @@ const Login: React.FC = () => {
           photoURL: user.photoURL || "",
         };
         localStorage.setItem("user", JSON.stringify(userData));
+        toast.success(`Welcome, ${user.displayName}!`);
         navigate("/");
       })
       .catch((error: AuthError) => {
@@ -65,6 +67,7 @@ const Login: React.FC = () => {
           photoURL: user.photoURL || "",
         };
         localStorage.setItem("user", JSON.stringify(userData));
+        toast.success(`Welcome, ${user.displayName}!`);
         navigate("/");
       })
       .catch((error: AuthError) => {
