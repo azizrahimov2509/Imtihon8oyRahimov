@@ -11,7 +11,6 @@ import { Link, useNavigate } from "react-router-dom";
 import bg1 from "../../../public/bgfood.jpg";
 import { FcGoogle } from "react-icons/fc";
 
-// Define types for state and error
 interface LoginData {
   email: string;
   password: string;
@@ -50,7 +49,6 @@ const Login: React.FC = () => {
         } else {
           setError(error.message);
         }
-        console.log(error.message);
       });
 
     setLoginData({ email: "", password: "" });
@@ -71,7 +69,6 @@ const Login: React.FC = () => {
       })
       .catch((error: AuthError) => {
         setError(error.message);
-        console.log(error.message);
       });
   };
 
@@ -111,7 +108,6 @@ const Login: React.FC = () => {
             required
           />
         </div>
-
         <div className="form-control mb-4 relative">
           <label className="label" htmlFor="password">
             <span className="label-text text-white text-base font-semibold">
@@ -141,19 +137,16 @@ const Login: React.FC = () => {
             )}
           </button>
         </div>
-
         {error && (
           <div className="text-[#ef3434] font-semibold mb-4 text-lg">
             {error}
           </div>
         )}
-
         <div className="form-control">
           <button type="submit" className="btn btn-primary w-full">
             Log in
           </button>
         </div>
-
         <div className="form-control mt-4">
           <button
             type="button"
@@ -163,7 +156,6 @@ const Login: React.FC = () => {
             <FcGoogle className="w-6 h-6" /> Continue with Google
           </button>
         </div>
-
         <div className="text-center mt-4">
           <p className="text-white font-semibold text-base">
             Don't have an account yet?
