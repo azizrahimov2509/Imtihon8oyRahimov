@@ -67,7 +67,7 @@ const Login: React.FC = () => {
           photoURL: user.photoURL || "",
         };
         localStorage.setItem("user", JSON.stringify(userData));
-        // toast.success(`Welcome, ${user.displayName}!`);
+        toast.success(`Welcome, ${user.displayName}!`);
         navigate("/");
       })
       .catch((error: AuthError) => {

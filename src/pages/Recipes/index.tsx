@@ -1,9 +1,11 @@
+// src/components/Recipes.tsx
 import React, { useEffect, useState } from "react";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../farebase/config";
 import { toast } from "react-hot-toast";
-
+import { useNavigate } from "react-router-dom";
 import { FaClock } from "react-icons/fa";
+import loader from "../../../public/loader.gif";
 
 interface Recipe {
   id: string;
@@ -16,9 +18,12 @@ interface Recipe {
 
 const Recipes: React.FC = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRecipes = async () => {
+      setLoading(true);
       try {
         const querySnapshot = await getDocs(collection(db, "recipes"));
         const recipesData = querySnapshot.docs.map(
@@ -27,6 +32,9 @@ const Recipes: React.FC = () => {
         setRecipes(recipesData);
       } catch (error) {
         console.error("Error fetching recipes: ", error);
+        toast.error("Error fetching recipes");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -51,23 +59,41 @@ const Recipes: React.FC = () => {
     }
   };
 
+  const handleCardClick = (id: string) => {
+    navigate(`/recipes/${id}`);
+  };
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl md:text-3xl pb-2 font-semibold">Recipes</h1>
       <hr className="mb-4" />
-      {recipes.length === 0 ? (
+      {loading ? (
+        <div className="flex justify-center items-center h-60">
+          <img
+            src={loader}
+            alt="Loading..."
+            width={384}
+            height={384}
+            className="w-96 h-96"
+          />
+        </div>
+      ) : recipes.length === 0 ? (
         <p className="text-center text-lg">There are no recipes!</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {recipes.map((recipe) => (
             <div
               key={recipe.id}
-              className="border p-3 rounded-md relative bg-white shadow-sm"
+              className="border p-3 rounded-md relative bg-white shadow-sm cursor-pointer"
+              onClick={() => handleCardClick(recipe.id)}
             >
               <button
                 type="button"
                 className="absolute top-2 right-2 text-red-500 text-lg bg-white rounded-full p-1"
-                onClick={() => handleDelete(recipe.id)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDelete(recipe.id);
+                }}
               >
                 ×
               </button>
@@ -97,7 +123,6 @@ const Recipes: React.FC = () => {
           ))}
         </div>
       )}
-      {/* <ToastContainer /> */}
     </div>
   );
 };

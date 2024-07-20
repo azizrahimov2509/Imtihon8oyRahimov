@@ -10,6 +10,7 @@ import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import Recipes from "./pages/Recipes";
 import { Toaster } from "react-hot-toast";
+import RecipeDetails from "./pages/RecipeDetails";
 
 interface RedirectProps {
   children: React.ReactNode;
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Recipes />,
+      },
+      {
+        path: "/recipes/:id",
+        element: <RecipeDetails />,
       },
     ],
   },

@@ -153,10 +153,10 @@ const RecipeModal: React.FC<RecipeModalProps> = ({ setRefresh }) => {
                 />
                 <button
                   type="button"
-                  className="btn btn-sm ml-2"
+                  className="btn btn-info ml-2 "
                   onClick={addIngredient}
                 >
-                  Add
+                  +
                 </button>
               </div>
               <div className="mt-2">
@@ -186,10 +186,10 @@ const RecipeModal: React.FC<RecipeModalProps> = ({ setRefresh }) => {
                 />
                 <button
                   type="button"
-                  className="btn btn-sm ml-2"
+                  className="btn btn-info ml-2"
                   onClick={addImage}
                 >
-                  Add
+                  +
                 </button>
               </div>
               <div className="mt-2 flex flex-wrap">
@@ -220,14 +220,14 @@ const RecipeModal: React.FC<RecipeModalProps> = ({ setRefresh }) => {
             <div className="flex space-x-4">
               <button
                 type="submit"
-                className="btn btn-outline btn-primary"
+                className="btn btn-info btn-primary w-52"
                 disabled={loading}
               >
-                {loading ? "Creating..." : "Create"}
+                {loading ? "Creating..." : "Apply"}
               </button>
               <button
                 type="button"
-                className="btn btn-outline btn-secondary"
+                className="btn btn-success w-52"
                 onClick={() => setShowPreview(true)}
               >
                 Preview
