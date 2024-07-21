@@ -3,9 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleDarkMode, selectDarkMode } from "../../store/DarkModeSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { FaHome, FaPlus, FaSignOutAlt } from "react-icons/fa";
-// import useGetData from "../../components/Hook/useGetData";
-import { auth } from "../../farebase/config";
 import RecipeModal from "../RecipeModal";
+import { RootState } from "../../store/bigstore";
 
 interface User {
   displayName?: string;
@@ -16,19 +15,14 @@ interface User {
 function Header() {
   const dispatch = useDispatch();
   const darkMode = useSelector(selectDarkMode);
-  //   const [refresh, setRefresh] = useState(false);
-  //   const {
-  //     data: [data],
-  //     isPending,
-  //     error,
-  //   } = useGetData("cart", refresh);
+  const cartItems = useSelector((state: RootState) => state.cart.items);
   const navigate = useNavigate();
   const storedUser = localStorage.getItem("user");
   const user: User | null = storedUser ? JSON.parse(storedUser) : null;
   const [theme, setTheme] = useState(
     localStorage.getItem("darkmode") || "light"
   );
-  //   const { products } = useSelector((state) => state.cart);
+
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
     localStorage.setItem("darkmode", theme);
@@ -50,19 +44,19 @@ function Header() {
     setTheme(newTheme);
     dispatch(toggleDarkMode());
   };
-  const user1 = auth?.currentUser?.providerData[0];
-  console.log(user1);
 
   const openModal = () => {
     const modal = document.getElementById("recipe_modal") as HTMLDialogElement;
     modal?.showModal();
   };
 
+  const itemCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+
   return (
     <header className="bg-base-300">
       <div className="container navbar">
         <div className="navbar-start">
-          <div className="dropdown  ml-5">
+          <div className="dropdown ml-5">
             <div
               tabIndex={0}
               role="button"
@@ -177,9 +171,9 @@ function Header() {
                       d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                     />
                   </svg>
-                  {/* <span className="badge badge-primary badge-sm indicator-item">
-                    {products?.reduce((acc, item) => acc + item.count, 0) ?? 0}
-                  </span> */}
+                  <span className="badge badge-primary badge-sm indicator-item">
+                    {itemCount}
+                  </span>
                 </div>
               </div>
               <div
@@ -187,14 +181,11 @@ function Header() {
                 className="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow"
               >
                 <div className="card-body">
-                  <span className="font-bold text-lg">
-                    {/* {products?.reduce((acc, item) => acc + item.count, 0) ?? 0}{" "} */}
-                    Items
-                  </span>
+                  <span className="font-bold text-lg">{itemCount} Items</span>
                   <div className="card-actions">
-                    <button className="btn btn-primary btn-block">
+                    <Link to="/cart" className="btn btn-primary btn-block">
                       View cart
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </div>
