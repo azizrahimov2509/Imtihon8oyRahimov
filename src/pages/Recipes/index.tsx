@@ -91,7 +91,7 @@ const Recipes: React.FC = () => {
             >
               <button
                 type="button"
-                className="absolute top-2 right-2 text-red-500 text-2xl rounded-full p-1"
+                className="absolute -top-2 right-2 text-red-500 text-4xl rounded-full p-1"
                 onClick={(e) => {
                   e.stopPropagation();
                   handleDelete(recipe.id);
