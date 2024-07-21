@@ -54,13 +54,7 @@ const RecipeModal: React.FC<RecipeModalProps> = ({ setRefresh }) => {
       const docRef = await addDoc(collection(db, "recipes"), recipeData);
       console.log(docRef);
       toast.success("Recipe added successfully!");
-      setTitle("");
-      setCookingTime("");
-      setIngredients([]);
-      setImages([]);
-      setMethod("");
-      setIngredientInput("");
-      setImageInput("");
+      resetForm();
       setRefresh();
       document.getElementById("recipe_modal")?.closest("dialog")?.close();
       window.location.reload();
@@ -85,11 +79,45 @@ const RecipeModal: React.FC<RecipeModalProps> = ({ setRefresh }) => {
     }
   };
 
+  const handleIngredientKeyPress = (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      addIngredient();
+    }
+  };
+
   const addImage = () => {
     if (imageInput) {
       setImages([...images, { id: Date.now(), value: imageInput }]);
       setImageInput("");
     }
+  };
+
+  const handleImageKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      addImage();
+    }
+  };
+
+  const clearIngredients = () => {
+    setIngredients([]);
+  };
+
+  const clearImages = () => {
+    setImages([]);
+  };
+
+  const resetForm = () => {
+    setTitle("");
+    setCookingTime("");
+    setIngredients([]);
+    setImages([]);
+    setMethod("");
+    setIngredientInput("");
+    setImageInput("");
   };
 
   return (
@@ -148,16 +176,24 @@ const RecipeModal: React.FC<RecipeModalProps> = ({ setRefresh }) => {
                 <input
                   value={ingredientInput}
                   onChange={(e) => setIngredientInput(e.target.value)}
+                  onKeyDown={handleIngredientKeyPress}
                   type="text"
                   placeholder="Add ingredients (comma separated)..."
                   className="input input-bordered input-md w-full input-primary"
                 />
                 <button
                   type="button"
-                  className="btn btn-info ml-2 "
+                  className="btn btn-info ml-2"
                   onClick={addIngredient}
                 >
                   +
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-warning ml-2"
+                  onClick={clearIngredients}
+                >
+                  Clear
                 </button>
               </div>
               <div className="mt-2">
@@ -181,6 +217,7 @@ const RecipeModal: React.FC<RecipeModalProps> = ({ setRefresh }) => {
                 <input
                   value={imageInput}
                   onChange={(e) => setImageInput(e.target.value)}
+                  onKeyDown={handleImageKeyPress}
                   type="text"
                   placeholder="Add an image URL..."
                   className="input input-bordered input-md w-full input-primary"
@@ -191,6 +228,13 @@ const RecipeModal: React.FC<RecipeModalProps> = ({ setRefresh }) => {
                   onClick={addImage}
                 >
                   +
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-warning ml-2"
+                  onClick={clearImages}
+                >
+                  Clear
                 </button>
               </div>
               <div className="mt-2 flex flex-wrap">

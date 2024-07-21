@@ -18,6 +18,7 @@ interface Recipe {
 const Recipes: React.FC = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [deleting, setDeleting] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -45,15 +46,17 @@ const Recipes: React.FC = () => {
       "Are you sure you want to delete this recipe?"
     );
     if (confirmDelete) {
+      setDeleting(id);
       try {
         await deleteDoc(doc(db, "recipes", id));
         setRecipes(recipes.filter((recipe) => recipe.id !== id));
         toast.success("Recipe has been deleted!", {
           position: "top-right",
-          className: "bg-red-500 text-white",
         });
       } catch (error) {
         console.error("Error deleting recipe: ", error);
+      } finally {
+        setDeleting(null);
       }
     }
   };
@@ -83,12 +86,12 @@ const Recipes: React.FC = () => {
           {recipes.map((recipe) => (
             <div
               key={recipe.id}
-              className="border p-3 rounded-md relative  shadow-sm cursor-pointer flex flex-col justify-between gap-5 h-80  "
+              className="border p-3 rounded-md relative shadow-sm cursor-pointer flex flex-col justify-between gap-5 h-80"
               onClick={() => handleCardClick(recipe.id)}
             >
               <button
                 type="button"
-                className="absolute top-2 right-2 text-red-500 text-2xl  rounded-full p-1"
+                className="absolute top-2 right-2 text-red-500 text-2xl rounded-full p-1"
                 onClick={(e) => {
                   e.stopPropagation();
                   handleDelete(recipe.id);
@@ -96,7 +99,18 @@ const Recipes: React.FC = () => {
               >
                 ×
               </button>
-              <div className="flex-1 overflow-hidden flex flex-col justify-between ">
+              {deleting === recipe.id && (
+                <div className="absolute inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-10">
+                  <img
+                    src={loader}
+                    alt="Deleting..."
+                    width={200}
+                    height={200}
+                    className="w-16 h-16"
+                  />
+                </div>
+              )}
+              <div className="flex-1 overflow-hidden flex flex-col justify-between">
                 <h2 className="text-lg font-semibold mb-2">{recipe.title}</h2>
                 <p className="text-sm mb-2 line-clamp-3">{recipe.method}</p>
                 <div className="flex items-center justify-end gap-1 text-sm text-gray-600">
@@ -107,7 +121,7 @@ const Recipes: React.FC = () => {
                     <FaClock size={14} color="blue" /> {recipe.cookingTime}{" "}
                     minutes
                   </p>
-                </div>{" "}
+                </div>
                 {recipe.images.length > 0 && (
                   <img
                     src={recipe.images[0]}
