@@ -55,7 +55,6 @@ const Statistics: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch preparation time data from 'recipes'
         const recipesCollectionRef = collection(db, "recipes");
         const recipesSnapshot = await getDocs(recipesCollectionRef);
         const recipesData = recipesSnapshot.docs.map(
@@ -121,7 +120,6 @@ const Statistics: React.FC = () => {
       }
     };
 
-    // Function to fetch the title from 'recipes' collection by ID
     const fetchTitleFromRecipe = async (id: string): Promise<string> => {
       try {
         const recipesCollectionRef = collection(db, "recipes");

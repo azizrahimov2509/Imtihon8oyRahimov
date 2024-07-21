@@ -41,9 +41,9 @@ const Cart: React.FC = () => {
           const data = doc.data() as DocumentData;
           return {
             id: doc.id,
-            title: data.title || "Unknown Title", // Default value if missing
-            quantity: data.quantity || 0, // Default value if missing
-            photoURL: data.photoURL || "", // Default value if missing
+            title: data.title || "Unknown Title",
+            quantity: data.quantity || 0,
+            photoURL: data.photoURL || "",
           };
         });
 
