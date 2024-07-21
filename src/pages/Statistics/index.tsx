@@ -16,6 +16,8 @@ interface CartItem {
 
 const Statistics: React.FC = () => {
   const [foodItems, setFoodItems] = useState<Recipe[]>([]);
+  console.log(foodItems);
+
   const [pieChartOptions, setPieChartOptions] = useState<{
     series: number[];
     options: any;
@@ -82,6 +84,7 @@ const Statistics: React.FC = () => {
           },
         });
 
+        // Fetch quantity data from 'carts'
         const cartCollectionRef = collection(
           db,
           "carts",
@@ -89,10 +92,15 @@ const Statistics: React.FC = () => {
           "items"
         );
         const cartSnapshot = await getDocs(cartCollectionRef);
-        const cartData = cartSnapshot.docs.map((doc) => {
-          const data = doc.data() as CartItem;
-          return { ...data, name: data.title || `Item ${doc.id}` };
-        });
+        const cartData = await Promise.all(
+          cartSnapshot.docs.map(async (doc) => {
+            const data = doc.data() as CartItem;
+            const docId = doc.id;
+            const title = await fetchTitleFromRecipe(docId);
+
+            return { ...data, title };
+          })
+        );
 
         setPieChartOptions({
           series: cartData.map((item) => item.quantity),
@@ -100,7 +108,9 @@ const Statistics: React.FC = () => {
             chart: {
               type: "pie",
             },
-            labels: cartData.map((item) => item.title),
+            labels: cartData.map(
+              (item) => item.title || `Item ${item.quantity}`
+            ),
             title: {
               text: "Quantity of Food Items by Name",
             },
@@ -108,6 +118,24 @@ const Statistics: React.FC = () => {
         });
       } catch (error) {
         console.error("Error fetching data:", error);
+      }
+    };
+
+    // Function to fetch the title from 'recipes' collection by ID
+    const fetchTitleFromRecipe = async (id: string): Promise<string> => {
+      try {
+        const recipesCollectionRef = collection(db, "recipes");
+        const recipesSnapshot = await getDocs(recipesCollectionRef);
+        const recipesData = recipesSnapshot.docs.map(
+          (doc) =>
+            ({ id: doc.id, ...doc.data() } as { id: string; title: string })
+        );
+
+        const recipe = recipesData.find((recipe) => recipe.id === id);
+        return recipe ? recipe.title : `Item ${id}`;
+      } catch (error) {
+        console.error("Error fetching title from recipes:", error);
+        return `Item ${id}`;
       }
     };
 

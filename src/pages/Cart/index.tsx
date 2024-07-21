@@ -40,12 +40,11 @@ const Cart: React.FC = () => {
         const cartData: CartItem[] = cartSnapshot.docs.map((doc) => {
           const data = doc.data() as DocumentData;
           return {
-            id: data.id,
-            title: data.title,
-            quantity: data.quantity,
-            photoURL: data.photoURL,
-            price: data.price,
-          } as CartItem;
+            id: doc.id,
+            title: data.title || "Unknown Title", // Default value if missing
+            quantity: data.quantity || 0, // Default value if missing
+            photoURL: data.photoURL || "", // Default value if missing
+          };
         });
 
         dispatch(loadCartFromFirebase(cartData));
