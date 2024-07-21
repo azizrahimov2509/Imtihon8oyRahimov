@@ -86,7 +86,7 @@ function Header() {
             </div>
             <div
               tabIndex={0}
-              className="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow"
+              className="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow-lg absolute right-0 top-full "
             >
               <div className="card-body">
                 <p>Name: {user?.displayName}</p>
@@ -104,7 +104,10 @@ function Header() {
           </div>
         </div>
         <div className="navbar-center">
-          <Link to={"/"} className="btn btn-ghost text-xl">
+          <Link
+            to={"/"}
+            className="btn btn-ghost text-base w-12  lg:text-xl lg:w-[150px]"
+          >
             Kitchen app
           </Link>
         </div>
@@ -132,7 +135,7 @@ function Header() {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 flex flex-col items-center gap-2"
+              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow-lg bg-base-100 rounded-box w-52 flex flex-col items-center gap-2 absolute right-0 top-full "
             >
               <li>
                 <Link to={"/"} className="btn btn-primary w-44">
@@ -185,7 +188,7 @@ function Header() {
               </div>
               <div
                 tabIndex={0}
-                className="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow"
+                className="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow-lg absolute right-0 top-full "
               >
                 <div className="card-body">
                   <span className="font-bold text-lg">{itemCount} Items</span>
