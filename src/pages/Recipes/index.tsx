@@ -1,4 +1,3 @@
-// src/components/Recipes.tsx
 import React, { useEffect, useState } from "react";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../farebase/config";
@@ -84,12 +83,12 @@ const Recipes: React.FC = () => {
           {recipes.map((recipe) => (
             <div
               key={recipe.id}
-              className="border p-3 rounded-md relative bg-white shadow-sm cursor-pointer"
+              className="border p-3 rounded-md relative bg-white shadow-sm cursor-pointer flex flex-col justify-between gap-5 h-80  "
               onClick={() => handleCardClick(recipe.id)}
             >
               <button
                 type="button"
-                className="absolute top-2 right-2 text-red-500 text-lg bg-white rounded-full p-1"
+                className="absolute top-2 right-2 text-red-500 text-2xl bg-white rounded-full p-1"
                 onClick={(e) => {
                   e.stopPropagation();
                   handleDelete(recipe.id);
@@ -97,9 +96,11 @@ const Recipes: React.FC = () => {
               >
                 ×
               </button>
-              <div className="mb-3">
+              <div className="flex-1 overflow-hidden flex flex-col justify-between ">
                 <h2 className="text-lg font-semibold mb-2">{recipe.title}</h2>
-                <p className="text-sm text-gray-700 mb-2">{recipe.method}</p>
+                <p className="text-sm text-gray-700 mb-2 line-clamp-3">
+                  {recipe.method}
+                </p>
                 <div className="flex items-center justify-end gap-1 text-sm text-gray-600">
                   <span className="indicator-item badge badge-primary">
                     new
@@ -108,17 +109,15 @@ const Recipes: React.FC = () => {
                     <FaClock size={14} color="blue" /> {recipe.cookingTime}{" "}
                     minutes
                   </p>
-                </div>
-              </div>
-              {recipe.images.length > 0 && (
-                <div className="relative">
+                </div>{" "}
+                {recipe.images.length > 0 && (
                   <img
                     src={recipe.images[0]}
                     alt={recipe.title}
                     className="w-full h-36 object-cover rounded"
                   />
-                </div>
-              )}
+                )}
+              </div>
             </div>
           ))}
         </div>

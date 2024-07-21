@@ -19,6 +19,7 @@ interface Recipe {
 const RecipeDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [recipe, setRecipe] = useState<Recipe | null>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -43,9 +44,26 @@ const RecipeDetails: React.FC = () => {
 
   const handleAddToCart = () => {
     if (recipe) {
-      const photoURL = recipe.images[0];
+      const photoURL = recipe.images[currentImageIndex];
       dispatch(addToCart({ ...recipe, quantity: 1, photoURL }));
       toast.success("Added to cart!");
+    }
+  };
+
+  const handleNextImage = () => {
+    if (recipe) {
+      setCurrentImageIndex(
+        (prevIndex) => (prevIndex + 1) % recipe.images.length
+      );
+    }
+  };
+
+  const handlePreviousImage = () => {
+    if (recipe) {
+      setCurrentImageIndex(
+        (prevIndex) =>
+          (prevIndex - 1 + recipe.images.length) % recipe.images.length
+      );
     }
   };
 
@@ -69,16 +87,27 @@ const RecipeDetails: React.FC = () => {
       </h1>
       <hr className="mb-4" />
 
-      <div className="flex gap-2 overflow-x-auto mb-4">
-        {recipe.images.map((image, index) => (
+      {recipe.images.length > 0 && (
+        <div className="relative mb-4">
           <img
-            key={index}
-            src={image}
-            alt={`Image ${index + 1} of ${recipe.title}`}
-            className="w-24 h-20 object-cover rounded"
+            src={recipe.images[currentImageIndex]}
+            alt={`Image ${currentImageIndex + 1} of ${recipe.title}`}
+            className="w-full h-96 object-cover rounded"
           />
-        ))}
-      </div>
+          <button
+            className="absolute top-1/2 left-0 transform -translate-y-1/2 btn-primary bg-gray-800 text-white p-2 rounded-l"
+            onClick={handlePreviousImage}
+          >
+            Previous
+          </button>
+          <button
+            className="absolute top-1/2 right-0 transform -translate-y-1/2 btn-primary bg-gray-800 text-white p-2 rounded-r"
+            onClick={handleNextImage}
+          >
+            Next
+          </button>
+        </div>
+      )}
 
       <h2 className="text-xl md:text-2xl font-semibold mb-2">{recipe.title}</h2>
       <p className="text-sm md:text-base mb-4">{recipe.method}</p>
