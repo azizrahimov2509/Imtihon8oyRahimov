@@ -63,6 +63,7 @@ const RecipeModal: React.FC<RecipeModalProps> = ({ setRefresh }) => {
       setImageInput("");
       setRefresh();
       document.getElementById("recipe_modal")?.closest("dialog")?.close();
+      window.location.reload();
     } catch (error) {
       console.error("Error adding document: ", error);
       toast.error("Error adding recipe. Please try again.");

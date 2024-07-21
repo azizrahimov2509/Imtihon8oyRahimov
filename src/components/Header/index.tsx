@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleDarkMode, selectDarkMode } from "../../store/DarkModeSlice";
 import { Link, useNavigate } from "react-router-dom";
-import { FaHome, FaPlus, FaSignOutAlt } from "react-icons/fa";
+import { FaHome, FaPlus, FaSignOutAlt, FaChartBar } from "react-icons/fa";
 import RecipeModal from "../RecipeModal";
 import { RootState } from "../../store/bigstore";
 
@@ -104,7 +104,9 @@ function Header() {
           </div>
         </div>
         <div className="navbar-center">
-          <a className="btn btn-ghost text-xl">Kitchen app</a>
+          <Link to={"/"} className="btn btn-ghost text-xl">
+            Kitchen app
+          </Link>
         </div>
         <div className="navbar-end">
           <div className="dropdown">
@@ -138,12 +140,17 @@ function Header() {
                 </Link>
               </li>
               <li>
-                <button className="btn btn-primary  w-44" onClick={openModal}>
+                <Link to={"/statistics"} className="btn btn-primary w-44">
+                  <FaChartBar /> Statistics
+                </Link>
+              </li>
+              <li>
+                <button className="btn btn-primary w-44" onClick={openModal}>
                   <FaPlus /> Create Recipe
                 </button>
               </li>
               <li>
-                <a onClick={handleLogout} className="btn btn-primary  w-44">
+                <a onClick={handleLogout} className="btn btn-primary w-44">
                   <FaSignOutAlt /> Logout
                 </a>
               </li>

@@ -12,6 +12,7 @@ import Recipes from "./pages/Recipes";
 import { Toaster } from "react-hot-toast";
 import RecipeDetails from "./pages/RecipeDetails";
 import Cart from "./pages/Cart";
+import Statistics from "./pages/Statistics";
 
 interface RedirectProps {
   children: React.ReactNode;
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
       {
         path: "/cart",
         element: <Cart />,
+      },
+      {
+        path: "/statistics",
+        element: <Statistics />,
       },
     ],
   },
